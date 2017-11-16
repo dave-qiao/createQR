@@ -75,7 +75,7 @@
 }
 
 /**
- * @brief 保存到本地 
+ * @brief 保存到本地
  * @param name 文件名字
  */
 - (void)saveWithName:(NSString *)name {
@@ -276,12 +276,12 @@
 }
 
 + (UIImage *)insetQRImage:(NSString *)qrstring
-             atImage:(UIImage *)bgImage
-             qrFrame:(CGRect )qrframe
-           logoImage:(UIImage *)logoImage
-              string:(NSString *)string
-         stringFrame:(CGRect)stringframe
-            fileName:(NSString *)fileName
+                  atImage:(UIImage *)bgImage
+                  qrFrame:(CGRect )qrframe
+                logoImage:(UIImage *)logoImage
+                   string:(NSString *)string
+              stringFrame:(CGRect)stringframe
+                 fileName:(NSString *)fileName
 {
     return [self insetQRImage:qrstring atImage:bgImage qrFrame:qrframe logoImage:logoImage string:string stringFrame:stringframe fileName:fileName savePath:nil];
 }
@@ -301,13 +301,39 @@
     UIImage *image = [self createQRImageWithContent:qrstring logoImage:logoImage];
     // 二维码添加到背景图片上
     image = [self addRefrigeratorQRImage:image qrframe:qrframe string:string stringFrame:stringframe atImage:bgImage];
+    
+    image = [image createCMYK];
     // 转换到300dpi
     image = [image dpi_300Image];
-//    image = [image imageWithDpi:300.f]; //这个是穿参的写法
+    //    image = [image imageWithDpi:300.f]; //这个是穿参的写法
+    
     // 保存图片
-    [self saveImage:image withFileName:fileName ofType:@"png" inDirectory:savePath];
+    [self saveImage:image withFileName:fileName ofType:@"jpg" inDirectory:savePath];
     NSLog(@"%@",savePath);
     return image;
+}
+
+
+- (UIImage *)createCMYK {
+    CIImage *image = [[CIImage alloc] initWithImage:self];
+    CGRect extent = CGRectIntegral(image.extent);
+    
+    // 1. 创建bitmap
+    size_t width = CGRectGetWidth(extent) * self.scale;
+    size_t height = CGRectGetHeight(extent) * self.scale;
+    CGColorSpaceRef cs = CGColorSpaceCreateDeviceCMYK();
+    CGContextRef bitmapRef = CGBitmapContextCreate(nil, width, height, 8, 0, cs, (CGBitmapInfo)kCGImageAlphaNone);
+    CIContext *context = [CIContext contextWithOptions:nil];
+    CGImageRef bitmapImage = [context createCGImage:image fromRect:extent];
+    CGContextSetInterpolationQuality(bitmapRef, kCGInterpolationNone);
+    CGContextScaleCTM(bitmapRef, self.scale, self.scale);
+    CGContextDrawImage(bitmapRef, extent, bitmapImage);
+    
+    // 2.保存bitmap图片
+    CGImageRef scaledImage = CGBitmapContextCreateImage(bitmapRef);
+    CGContextRelease(bitmapRef);
+    CGImageRelease(bitmapImage);
+    return [UIImage imageWithCGImage:scaledImage];
 }
 
 @end
