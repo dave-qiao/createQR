@@ -29,22 +29,22 @@ typedef enum : NSUInteger {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // 单个测试
-    // self.logoImage = [UIImage imageNamed:@"logo"];
-    // NSString *name = [NSString stringWithFormat:@"%@",@([[NSDate date] timeIntervalSince1970])];
-    // [UIImage insetQRImage:@"http://weixin.qq.com"//二维码内容
-    //            atImage:[UIImage imageNamed:@"BingGui"]//背景图片
-    //            qrFrame:CGRectMake(4823, 545, 1362, 1362)//二维码的位置大小
-    //             logoImage:self.logoImage//logo
-    //             string:@"LB123456"//需要添加的文字
-    //        stringFrame:CGRectMake(5409, 1905, 200, 36)// 文字的位置大小
-    //           fileName:@"LB123456"];// 文件保存名字
+    self.logoImage = [UIImage imageNamed:@"logo"];
+    NSString *name = [NSString stringWithFormat:@"%@",@([[NSDate date] timeIntervalSince1970])];
+    [UIImage insetQRImage:@"http://weixin.qq.com"//二维码内容
+               atImage:[UIImage imageNamed:@"BingGui"]//背景图片
+               qrFrame:CGRectMake(4823, 545, 1362, 1362)//二维码的位置大小
+                logoImage:self.logoImage//logo
+                string:@"LB123456"//需要添加的文字
+           stringFrame:CGRectMake(5409, 1905, 200, 36)// 文字的位置大小
+              fileName:@"LB123456"];// 文件保存名字
 
     // 批量
-    self.logoImage = [UIImage imageNamed:@"logo"];
+    // self.logoImage = [UIImage imageNamed:@"logo"];
     
-    NSData *data = [[NSData alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"DaHuoGui" ofType:@"json"]];
-    self.qrContents = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-    [self createImageAtIndex:@(0)];
+    // NSData *data = [[NSData alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"DaHuoGui" ofType:@"json"]];
+    // self.qrContents = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    // [self createImageAtIndex:@(0)];
 }
 
 - (void)createImageAtIndex:(NSNumber *)index {
