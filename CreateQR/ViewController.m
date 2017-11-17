@@ -45,16 +45,16 @@ typedef enum : NSUInteger {
     NSData *data = [[NSData alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"DaHuoGui" ofType:@"json"]];
     self.qrContents = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
     [self createImageAtIndex:@(0)];
+    // 0--500
 }
 
 - (void)createImageAtIndex:(NSNumber *)index {
-    if (index.integerValue >= self.qrContents.count) {
+    if (index.integerValue >= 500) {
         return;
     }
     NSDictionary *dic = self.qrContents[index.integerValue];
     NSString *name = dic[@"hc"];//保存的名字
     NSString *content = dic[@"qr"];//二维码内容
-    NSLog(@"%@",content);
     // NSString *number = [NSString stringWithFormat:@"%@",index];
     UIImage *image = [UIImage insetQRImage:content//二维码内容
                   atImage:[UIImage imageNamed:@"BingGui"]//背景图片
