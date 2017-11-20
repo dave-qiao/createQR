@@ -39,17 +39,17 @@ typedef enum : NSUInteger {
     //        stringFrame:CGRectMake(5409, 1905, 200, 36)// 文字的位置大小
     //           fileName:@"LB123456"];// 文件保存名字
 
-    // 批量
+    // // 批量
     self.logoImage = [UIImage imageNamed:@"logo"];
     
     NSData *data = [[NSData alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"DaHuoGui" ofType:@"json"]];
     self.qrContents = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-    [self createImageAtIndex:@(0)];
-    // 0--500
+    [self createImageAtIndex:@(1001)];
+    // 1001--1500
 }
 
 - (void)createImageAtIndex:(NSNumber *)index {
-    if (index.integerValue >= 500) {
+    if (index.integerValue >= 1500) {
         return;
     }
     NSDictionary *dic = self.qrContents[index.integerValue];
